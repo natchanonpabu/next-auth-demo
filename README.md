@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NextAuth Demo
 
-## Getting Started
+โปรเจคตัวอย่างการใช้งาน NextAuth v5 กับ Next.js 15
 
-First, run the development server:
+## การติดตั้ง
+
+```bash
+npm install
+```
+
+## ตั้งค่า Environment Variables
+
+แก้ไขไฟล์ `.env.local`:
+
+```env
+# สร้าง secret key ด้วยคำสั่ง: openssl rand -base64 32
+AUTH_SECRET=your-secret-key-change-this-in-production
+
+# GitHub OAuth (ไปสร้างที่ https://github.com/settings/developers)
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
+
+# Google OAuth (ไปสร้างที่ https://console.cloud.google.com/apis/credentials)
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+AUTH_URL=http://localhost:3000
+```
+
+## การรันโปรเจค
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+เปิดเบราว์เซอร์ไปที่ [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## การใช้งาน
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Credentials Login (Demo)
+- Email: `test@example.com`
+- Password: `password`
 
-## Learn More
+### 2. GitHub OAuth
+- ต้องสร้าง OAuth App ที่ GitHub Settings
+- Callback URL: `http://localhost:3000/api/auth/callback/github`
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Google OAuth
+- ต้องสร้าง OAuth Client ที่ Google Cloud Console
+- Authorized redirect URIs: `http://localhost:3000/api/auth/callback/google`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## โครงสร้างไฟล์
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+├── auth.ts                          # NextAuth configuration
+├── middleware.ts                    # Protected routes middleware
+├── app/
+│   ├── api/auth/[...nextauth]/     # API routes
+│   ├── auth/signin/                # Sign in page
+│   ├── dashboard/                  # Protected dashboard page
+│   └── page.tsx                    # Home page
+└── .env.local                      # Environment variables
+```
 
-## Deploy on Vercel
+## คุณสมบัติ
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- ✅ Multiple authentication providers (GitHub, Google, Credentials)
+- ✅ Protected routes with middleware
+- ✅ Server-side session handling
+- ✅ Custom sign-in page
+- ✅ TypeScript support
+- ✅ Tailwind CSS styling
